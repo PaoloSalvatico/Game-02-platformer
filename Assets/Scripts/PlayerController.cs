@@ -19,6 +19,8 @@ namespace Platformer.Player
 
         protected GameInput _input;
 
+        protected Dictionary<float, ActionList> _actions;
+
         private void Awake()
         {
             _rb = GetComponent<Rigidbody2D>();
@@ -35,7 +37,14 @@ namespace Platformer.Player
             _moveRight = new MoveCommand(_rb, MoveDirection.Right, 3f);
 
             _input = new GameInput();
-            _input.Player.SetCallbacks(this);
+
+            //_input.Player.SetCallbacks(this);
+            _input.Player.Jump.started += OnJump;
+            _input.Player.Move.performed += OnMove;
+
+            _actions = new Dictionary<float, ActionList>();
+
+           // _actions.Add(Time.timeSinceLevelLoad, ActionList.Jump);
         }
 
         private void OnEnable()
@@ -50,6 +59,19 @@ namespace Platformer.Player
 
         private void Update()
         {
+            var moveInput = _input.Player.Move.ReadValue<Vector2>();
+            if(moveInput.x > 0)
+            {
+                _moveRight.Execute();
+                _spriteRenderer.flipX = false;
+            }
+
+            if(moveInput.x < 0)
+            {
+                _moveLeft.Execute();
+                _spriteRenderer.flipX = true;
+            }
+
             //if(Input.GetButtonDown("Jump"))
             //{
             //    _jump.Execute();
@@ -96,7 +118,7 @@ namespace Platformer.Player
 
         public void OnMove(InputAction.CallbackContext context)
         {
-            throw new System.NotImplementedException();
+            
         }
 
         public void OnLook(InputAction.CallbackContext context)
