@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Platformer.GameInput;
+using static GameInput;
 
 namespace Platformer.Player
 {
@@ -123,7 +123,7 @@ namespace Platformer.Player
 
         public void OnLook(InputAction.CallbackContext context)
         {
-            throw new System.NotImplementedException();
+
         }
 
         public void OnFire(InputAction.CallbackContext context)
